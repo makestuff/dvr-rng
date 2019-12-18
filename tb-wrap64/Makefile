@@ -16,21 +16,8 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-source "$::env(PROJ_HOME)/tools/common.do"
+TESTBENCH := dvr_rng_tb
 
-proc do_test {gui} {
-    if {$gui} {
-        vsim_run $::env(TESTBENCH)
+include $(PROJ_HOME)/tools/common.mk
 
-        add wave      uut/clk
-        add wave      uut/ce
-        add wave      uut/mode
-        add wave      uut/s_in
-        add wave      uut/s_out
-        add wave -hex uut/rng
-
-        gui_run 330 70 9 10 10230 32 10249
-    } else {
-        cli_run
-    }
-}
+$(COMPILE): $(TESTBENCH:%=%.vhdl)

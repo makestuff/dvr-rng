@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019 Chris McClelland
+# Copyright (C) 2014, 2017 Chris McClelland
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 # and associated documentation files (the "Software"), to deal in the Software without
@@ -16,21 +16,23 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-source "$::env(PROJ_HOME)/tools/common.do"
+ifeq ($(OS),Windows_NT)
+  CPP := cl -EHsc -Fe
+  EXT := .exe
+else
+  CPP := g++ -g -std=c++11 -o
+endif
 
-proc do_test {gui} {
-    if {$gui} {
-        vsim_run $::env(TESTBENCH)
+TARGETS := write_vhdl$(EXT) get_seq32$(EXT) get_seq64$(EXT) get_seq96$(EXT)
 
-        add wave      uut/clk
-        add wave      uut/ce
-        add wave      uut/mode
-        add wave      uut/s_in
-        add wave      uut/s_out
-        add wave -hex uut/rng
+.PHONY: gen compile test clean
 
-        gui_run 330 70 9 10 10230 32 10249
-    } else {
-        cli_run
-    }
-}
+gen: $(TARGETS)
+compile: gen
+test: gen
+
+%$(EXT): %.cpp
+	$(CPP)$@ $<
+
+clean:
+	rm -f $(TARGETS) *.obj

@@ -16,21 +16,22 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-source "$::env(PROJ_HOME)/tools/common.do"
+WORK := makestuff
+SUBDIRS := gen-rng tb-impl tb-wrap32 tb-wrap64 tb-wrap96
+GEN_LIST := $(shell cat gen-list.txt)
+VHDL_LIST := $(GEN_LIST:%=%.vhdl)
+ifeq ($(OS),Windows_NT)
+  EXT := .exe
+endif
 
-proc do_test {gui} {
-    if {$gui} {
-        vsim_run $::env(TESTBENCH)
+include $(PROJ_HOME)/tools/common.mk
 
-        add wave      uut/clk
-        add wave      uut/ce
-        add wave      uut/mode
-        add wave      uut/s_in
-        add wave      uut/s_out
-        add wave -hex uut/rng
+gen:: $(VHDL_LIST)
 
-        gui_run 330 70 9 10 10230 32 10249
-    } else {
-        cli_run
-    }
-}
+rng_n%.vhdl: gen-rng/write_vhdl$(EXT)
+	gen-rng/write_vhdl$(EXT) $(subst rng_n,,$(subst _r, ,$(subst _t, ,$(subst _k, ,$(subst _s, 0x,$(subst .vhdl,,$@))))))
+
+$(COMPILE): $(VHDL_LIST) dvr_rng32.vhdl dvr_rng64.vhdl dvr_rng96.vhdl dvr_rng_pkg.sv
+
+clean::
+	rm -f tb-impl/test_rng_n* rng_n*
