@@ -33,7 +33,7 @@ architecture behavioural of dvr_rng_tb is
 	signal ready              : std_logic;
 begin
 	-- Instantiate random-number generator
-	uut: entity makestuff.dvr_rng64
+	uut: entity makestuff.makestuff_dvr_rng64
 		port map (
 			clk_in           => clk,
 			data_out         => data,

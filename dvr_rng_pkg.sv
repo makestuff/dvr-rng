@@ -16,7 +16,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package dvr_rng_pkg;
+package makestuff_dvr_rng_pkg;
   // The first 256 values we expect to get from the 32-bit RNG
   typedef logic[31:0] uint32;
   localparam uint32[0:511] SEQ32 = {
