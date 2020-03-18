@@ -1,12 +1,22 @@
 ## Random-number generators
-You can git submodule this repo to provide a selection of single-cycle random-number generators of various widths, including a software behavioural model. See [`altera-pcie`](https://github.com/makestuff/altera-pcie) repo for an example of how to do this.
+You can git submodule this repo to provide a selection of single-cycle random-number generators of various widths, including a software behavioural model.
 
 All the clever stuff is in a [2013 paper](http://cas.ee.ic.ac.uk/people/dt10/research/rngs-fpga-lut_sr.html) by [David Thomas](http://cas.ee.ic.ac.uk/people/dt10/index.html).
 
 The build is currently configured to produce RNGs for 32, 64 and 96-bit widths (including testbenches), each of which produce a pseudo-random sequence that can be verified in software (see gen-rng subdir).
 
-You can build and test with ModelSim like this:
+See [BuildInfra](https://github.com/makestuff/ws-tools/blob/master/README.md) for details of how to incorporate this into your project.
 
+You can install it in a new workspace `$HOME/my-workspace` like this:
+
+    cd $HOME
+    export ALTERA=/usr/local/altera-16.1  # or wherever
+    mkws.sh my-workspace makestuff:dvr-rng
+    export PROJ_HOME=$HOME/my-workspace
+
+Then assuming you have ModelSim in your `PATH`, you can run the tests:
+
+    cd $PROJ_HOME/ip/makestuff/dvr-rng
     make test
 
 You can then compare the ModelSim results with the software model like this:
