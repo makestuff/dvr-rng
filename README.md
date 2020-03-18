@@ -14,7 +14,7 @@ You can install it in a new workspace `$HOME/my-workspace` like this:
     mkws.sh my-workspace makestuff:dvr-rng
     export PROJ_HOME=$HOME/my-workspace
 
-Then assuming you have ModelSim in your `PATH`, you can run the tests:
+Then assuming you have ModelSim in your `PATH`, you can run all the tests:
 
     cd $PROJ_HOME/ip/makestuff/dvr-rng
     make test
